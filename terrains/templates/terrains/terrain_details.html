@@ -21,7 +21,7 @@
             <div class="project-info-box">
                  <p ><b><strong>Tarif horaire:</strong></b> {{ terrain.tarif_horaire }}</p>
 
-               <p><b>Adresse:</b> {{ terrain.adresse }}</p>
+              <p> <b>Adresse:</b><a href="{{ terrain.adresse }}"> Clique ici</a></p>
                 <p><b>Disponibilité:</b> {% if terrain.disponibilite %} Disponible {% else %} Indisponible {% endif %}</p>
                 <p><b>Capacité de joueur:</b> {{ terrain.capacite_joueur }}</p>
                 <p><b>Superficie:</b> {{ terrain.superficie }}</p>
@@ -30,7 +30,7 @@
                 <p><b>Administrateur:</b> {{ terrain.administrateur }}</p>
 
             </div><!-- / project-info-box -->
-
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3325.1311754096337!2d-7.636353000000001!3d33.549968!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda62d49db4f37b5%3A0x7ff481f78b8807b2!2sCity%20Foot%205!5e0!3m2!1sfr!2sma!4v1715960866247!5m2!1sfr!2sma" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
         </div><!-- / column -->
 
