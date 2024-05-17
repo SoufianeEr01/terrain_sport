@@ -1,0 +1,110 @@
+{% extends 'terrains/dashBase.html' %}
+  {% block content %}
+        <div class="main">
+            <nav class="navbar navbar-expand px-3 border-bottom">
+                <button class="btn" id="sidebar-toggle" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse navbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main class="content px-3 py-2">
+                <div class="container-fluid">
+                    <div class="mb-3">
+                        <h4>Ajouter Terrain</h4>
+                    </div>
+                    <hr />
+                    <form method="post" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <div class="row mb-3">
+                        <div class="col">
+                          <div data-mdb-input-init class="form-outline">
+                            <input type="text" id="nom" name="nom" class="form-control" required />
+                            <label class="form-label" for="nom">Nom</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div data-mdb-input-init class="form-outline">
+                            <input type="text" id="adresse" name="adresse" class="form-control" required />
+                            <label class="form-label" for="adresse">Adresse</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col">
+                          <div data-mdb-input-init class="form-outline">
+                            <input type="number" id="tarif_horaire" name="tarif_horaire" class="form-control" step="0.01" required />
+                            <label class="form-label" for="tarif_horaire">Tarif Horaire</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div data-mdb-input-init class="form-outline">
+                            <select id="disponibilite" name="disponibilite" class="form-control" required>
+                              {% for value, name in disponibilite_choices %}
+                                <option value="{{ value }}">{{ name }}</option>
+                              {% endfor %}
+                            </select>
+                            <label class="form-label" for="disponibilite">Disponibilité</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col">
+                          <div data-mdb-input-init class="form-outline">
+                            <input type="number" id="capacite_joueur" name="capacite_joueur" class="form-control" required />
+                            <label class="form-label" for="capacite_joueur">Capacité Joueur</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div data-mdb-input-init class="form-outline">
+                            <input type="number" id="superficie" name="superficie" class="form-control" step="0.01" required />
+                            <label class="form-label" for="superficie">Superficie</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col">
+                          <div data-mdb-input-init class="form-outline">
+                            <input type="number" id="latitude" name="latitude" class="form-control" step="0.000001" required />
+                            <label class="form-label" for="latitude">Latitude</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div data-mdb-input-init class="form-outline">
+                            <input type="number" id="longitude" name="longitude" class="form-control" step="0.000001" required />
+                            <label class="form-label" for="longitude">Longitude</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col">
+                                  <div data-mdb-input-init class="form-outline">
+            <select id="administrateur" name="administrateur" class="form-control" required>
+                {% for administrateur in administrateurs %}
+                <option value="{{ administrateur.id }}">{{ administrateur.first_name }}</option>
+                {% endfor %}
+            </select>
+            <label class="form-label" for="administrateur">Administrateur</label>
+        </div>
+
+                        </div>
+                        <div class="col">
+                          <div data-mdb-input-init class="form-outline">
+                            <input type="file" id="image" name="image" class="form-control" />
+                            <label class="form-label" for="image">Image</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mt-4">
+                        <div class="col">
+                          <button type="submit" class="btn btn-primary" data-mdb-ripple-init >Ajouter Terrain</button>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+            </main>
+          {% endblock content %}

@@ -1,0 +1,112 @@
+{% load static %}
+<html>
+<head>
+    <title>Register</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'terrains/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'terrains/css/bootstrap/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/jquery-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/jquery.fancybox.min.css' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/bootstrap-datepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'terrains/fonts/flaticon/font/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/aos.css' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/style.css' %}">
+</head>
+<body>
+<div class="site-wrap">
+    <div class="site-mobile-menu site-navbar-target">
+        <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close">
+                <span class="icon-close2 js-menu-toggle"></span>
+            </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+    </div>
+    <header class="site-navbar py-4" role="banner">
+        <div class="container">
+            <div class="d-flex align-items-center">
+                <div class="site-logo">
+                    <a href="#">
+                        <img src="{% static 'terrains/images/logo.png' %}" alt="Logo">
+                    </a>
+                </div>
+                <div class="ml-auto">
+                    <nav class="site-navigation position-relative text-right" role="navigation">
+                        <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                            <li class="active"><a href="{% url 'index' %}" class="nav-link">Home</a></li>
+                            <li><a href="{% url 'players' %}" class="nav-link">Terrains</a></li>
+                            <li><a href="#" class="nav-link">Blog</a></li>
+                            <li><a href="#" class="nav-link">Contact</a></li>
+                        </ul>
+                    </nav>
+                    <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black float-right text-white"><span class="icon-menu h3 text-white"></span></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero overlay" style="background-image: url('{% static "terrains/images/bg_3.jpg" %}');">
+        <section class="vh-100" >
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col col-xl-10">
+                        <div class="card" style="border-radius: 1rem;">
+                            <div class="row g-0">
+                                <div class="col-md-6 col-lg-5 d-none d-md-block" id="1">
+                                    <img src="https://img.freepik.com/photos-gratuite/vue-du-terrain-football-herbe_23-2150887308.jpg?t=st=1715512972~exp=1715516572~hmac=7450049f6b3a2c94f38eab3892e75502b9dd2a43b0d3c3b64ffbfcbd34c33a86&w=360"
+                                         alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem; height: 100%;" />
+                                </div>
+                                <div class="col-md-6 col-lg-6 d-flex align-items-center">
+                                    <div class="card-body p-4 p-lg-5 text-black">
+                                   <form method="POST" action="{% url 'register' %}">
+    {% csrf_token %}
+    <div class="d-flex align-items-center mb-3 pb-1">
+        <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
+        <span class="h1 fw-bold mb-0">
+            <div class="logo-circle">
+            </div>
+        </span>
+    </div>
+    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px; color: black;">Register</h5>
+    <div class="form-outline mb-4">
+        <label class="form-label" for="name">Last Name</label>
+        <input type="text" id="name" name="name" class="form-control-plaintext form-control-lg" style="border: 2px solid black;" />
+    </div>
+    <div class="form-outline mb-4">
+        <label class="form-label" for="first_name">First Name</label>
+        <input type="text" id="first_name" name="first_name" class="form-control-plaintext form-control-lg" style="border: 2px solid black;" />
+    </div>
+    <div class="form-outline mb-4">
+        <label class="form-label" for="email">Email address</label>
+        <input type="email" id="email" name="email" class="form-control-plaintext form-control-lg" style="border: 2px solid black;" />
+    </div>
+    <div class="form-outline mb-4">
+        <label class="form-label" for="password">Password</label>
+        <input type="password" id="password" name="password" class="form-control-plaintext form-control-lg" style="border: 2px solid black;" />
+    </div>
+    <div class="pt-1 mb-4">
+        <button type="submit" class="btn btn-dark btn-lg btn-block">Register</button>
+    </div>
+</form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>
+<style>
+
+    .card {
+    margin-top: 23px; /* Ajustez la valeur selon votre préférence */
+}
+</style>

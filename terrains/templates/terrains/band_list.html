@@ -1,0 +1,5 @@
+ {% for band in bands %}
+    {% comment %}<li><a href="/bands/{{ band.id }}/">{{{ band.name }}</a></li>{% endcomment %}
+    <li><a href="{% url 'band-detail' band.id %}">{{ band.name }}</a></li>
+
+   {% endfor %}

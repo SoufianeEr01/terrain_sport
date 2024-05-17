@@ -1,0 +1,140 @@
+{% load static %}
+<html>
+<head>
+    <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'terrains/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'terrains/css/bootstrap/bootstrap.css ' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/jquery-ui.css ' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/owl.carousel.min.css ' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/owl.theme.default.min.css ' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/jquery.fancybox.min.css ' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/bootstrap-datepicker.css ' %}">
+    <link rel="stylesheet" href="{% static 'terrains/fonts/flaticon/font/flaticon.css ' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/aos.css ' %}">
+     <link rel="stylesheet" href="{% static 'terrains/css/style.css ' %}">
+
+</head>
+<body>
+
+<div class="site-wrap">
+    <div class="site-mobile-menu site-navbar-target">
+        <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close">
+                <span class="icon-close2 js-menu-toggle"></span>
+            </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+    </div>
+    <header class="site-navbar py-4" role="banner">
+        <div class="container">
+            <div class="d-flex align-items-center">
+                <div class="site-logo">
+                    <a href="#">
+                        <img src="{% static 'terrains/images/logo.png' %}" alt="Logo">
+                    </a>
+                </div>
+                <div class="ml-auto">
+                    <nav class="site-navigation position-relative text-right" role="navigation">
+                        <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                            <li class="active"><a href="{% url 'index' %}" class="nav-link">Home</a></li>
+                            <li><a href="{% url 'players' %}" class="nav-link">Terrains</a></li>
+                            <li><a href="#" class="nav-link">Blog</a></li>
+                            <li><a href="#" class="nav-link">Contact</a></li>
+                        </ul>
+                    </nav>
+                    <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black float-right text-white"><span class="icon-menu h3 text-white"></span></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero overlay" style="background-image: url('{% static "terrains/images/bg_3.jpg" %}');">
+        <div><section class="vh-100">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-xl-10">
+        <div class="card" style="border-radius: 1rem;">
+          <div class="row g-0">
+            <div class="col-md-6 col-lg-5 d-none d-md-block" id="1">
+      <img src="https://img.freepik.com/photos-gratuite/vue-du-terrain-football-herbe_23-2150887297.jpg?t=st=1715359500~exp=1715363100~hmac=ddb928b17b7b0c3751c22503e1d8799814315adbd9143cfe77f42af773330440&w=360"
+                  alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem; height: 100%;" />
+            </div>
+            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+              <div class="card-body p-4 p-lg-5 text-black">
+
+                <form method="POST" action="{% url 'login' %}">
+                  {% csrf_token %}
+                  <div class="d-flex align-items-center mb-3 pb-1">
+                    <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
+                    <span class="h1 fw-bold mb-0">
+                      <div class="logo-circle">
+                        <img src="https://img.freepik.com/vecteurs-libre/soccer-ball-icone_1025-402.jpg?t=st=1715386033~exp=1715389633~hmac=e20e8af49cdac0864b5a5f6b8b875932c18294ff8601e23fc288c4fb89faa960&w=740" alt="Soccer Ball">
+                      </div>
+                    </span>
+                  </div>
+
+                  <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px; color: black;">Sign into your account</h5>
+
+                  <div  class="form-outline mb-4" >
+                    <label class="form-label" for="email">Email address</label>
+                      <input type="text" id="email" name="email" class="form-control-plaintext form-control-lg" style="border: 2px solid black;"  />
+                        <div style="color: red">
+                     {% if messages %}{% for message in messages %}{% if forloop.first %}{{ message }}{% endif %}{% endfor %}{% endif %}
+                          </div>
+                  </div>
+
+
+                  <div data-mdb-input-init class="form-outline mb-4" >
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control-plaintext form-control-lg" style="border: 2px solid black;"  />
+                  </div>
+                  <div class="pt-1 mb-4">
+                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
+                  </div>
+
+                  <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="{% url 'register' %}" style="color: #393f81;">Register here</a></p>
+
+
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section></div>
+</div>
+
+
+</body>
+</html>
+<style>
+.logo-circle {
+  width: 100px;
+  height: 80px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.logo-circle img {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  transition: transform 0.3s ease; /* Ajout d'une transition fluide */
+}
+
+.logo-circle img:hover {
+  transform: scale(1.2); /* Zoom de 20% au survol */
+}
+.card {
+    margin-top: 50px; /* Ajustez la valeur selon votre préférence */
+}
+
+</style>
+

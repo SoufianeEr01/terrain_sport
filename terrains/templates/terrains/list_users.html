@@ -1,0 +1,59 @@
+{% extends 'terrains/dashBase.html' %}
+
+  {% block content %}
+       <div class="main">
+            <nav class="navbar navbar-expand px-3 border-bottom">
+                <button class="btn" id="sidebar-toggle" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse navbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+
+
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main class="content px-3 py-2">
+                <div class="container-fluid">
+                    <div class="mb-3">
+                        <h4>Listes Users</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6 d-flex">
+                            <div class="card flex-fill border-0 illustration">
+                                <div class="card-body p-0 d-flex flex-fill">
+                                    <div class="row g-0 w-100">
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+<!-- Première table -->
+<table class="table table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Id</th>
+
+      <th scope="col">Email</th>
+      <th scope="col">Prénom</th>
+      <th scope="col">Nom</th>
+      <!-- Ajoutez d'autres champs utilisateur que vous souhaitez afficher -->
+    </tr>
+  </thead>
+  <tbody style="color: white">
+    {% for utilisateur in utilisateurs %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ utilisateur.email }}</td>
+      <td>{{ utilisateur.first_name }}</td>
+      <td>{{ utilisateur.last_name }}</td>
+      <!-- Ajoutez d'autres champs utilisateur que vous souhaitez afficher -->
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+  {% endblock content %}
