@@ -40,7 +40,8 @@
       <th scope="col">Tarif Horaire</th>
       <th scope="col">Disponibilité</th>
       <th scope="col">Capacité de joueur</th>
-      <th scope="col">Superficie</th>
+        <th scope="col">Admin</th>
+        <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody style="color:white">
@@ -52,10 +53,14 @@
       <td>{{ terrain.tarif_horaire }}</td>
       <td>{{ terrain.disponibilite }}</td>
       <td>{{ terrain.capacite_joueur }}</td>
-      <td>{{ terrain.superficie }}</td>
+      <td>{{ terrain.administrateur }}</td>
+        <td>
+        <!-- Bouton de modification -->
+        <a href="{% url 'modifier_terrain' terrain_id=terrain.id %}" class="btn btn-primary">Modifier</a>
+        <!-- Bouton de suppression -->
+        </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
-
   {% endblock content %}

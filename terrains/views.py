@@ -4,11 +4,13 @@ from django.contrib.auth.decorators import login_required
 # listings/views.py
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import logout
+from django.http import JsonResponse
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 from terrains.models import Terrain
 from .models import Client
@@ -16,6 +18,9 @@ from django.shortcuts import render
 from django.contrib import messages
 
 from terrains.TerrainForm import TerrainForm
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+
 def index(request):
     return render(request, 'terrains/index.html')
 #def hello(request):
@@ -102,19 +107,39 @@ def liste_utilisateurs(request):
     return render(request, 'terrains/list_users.html', context)
 
 
-
-
-
 def Ajout_terrain(request):
     if request.method == 'POST':
         form = TerrainForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            # Récupérer l'utilisateur superutilisateur
+            super_user = User.objects.filter(is_superuser=True).first()
+
+            # Créer une nouvelle instance de Terrain en associant l'administrateur
+            terrain = form.save(commit=False)
+            terrain.administrateur = super_user
+            terrain.save()
+
             return redirect('dashbord')  # Rediriger vers une vue appropriée après l'ajout
     else:
         form = TerrainForm()
 
-    superusers = User.objects.filter(is_superuser=True)
-    return render(request, 'terrains/Ajoute_terrain.html',
-                  {'form': form, 'disponibilite_choices': Terrain._meta.get_field('disponibilite').choices,
-                   'administrateurs': superusers})
+    return render(request, 'terrains/Ajoute_terrain.html', {
+        'form': form,
+        'disponibilite_choices': Terrain._meta.get_field('disponibilite').choices
+    })
+
+
+def modifier_terrain(request, terrain_id):
+    terrain = get_object_or_404(Terrain, pk=terrain_id)
+    if request.method == 'POST':
+        form = TerrainForm(request.POST, request.FILES, instance=terrain)
+        if form.is_valid():
+            form.save()
+            return redirect('liste_terrains')
+    else:
+        form = TerrainForm(instance=terrain)
+
+    return render(request, 'terrains/Modifier_terrain.html', {'form': form, 'terrain': terrain,'disponibilite_choices': Terrain._meta.get_field('disponibilite').choices})
+
+
+
