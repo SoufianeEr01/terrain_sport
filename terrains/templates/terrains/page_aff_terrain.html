@@ -1,0 +1,61 @@
+{% extends 'terrains/dashBase.html' %}
+  {% block content %}
+       <div class="main">
+            <nav class="navbar navbar-expand px-3 border-bottom">
+                <button class="btn" id="sidebar-toggle" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse navbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+
+
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main class="content px-3 py-2">
+                <div class="container-fluid">
+                    <div class="mb-3">
+                        <h4>Listes Terrains</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6 d-flex">
+                            <div class="card flex-fill border-0 illustration">
+                                <div class="card-body p-0 d-flex flex-fill">
+                                    <div class="row g-0 w-100">
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+<!-- Première table -->
+<table class="table table-hover" >
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Adresse</th>
+      <th scope="col">Tarif Horaire</th>
+      <th scope="col">Disponibilité</th>
+      <th scope="col">Capacité de joueur</th>
+      <th scope="col">Superficie</th>
+    </tr>
+  </thead>
+  <tbody style="color:white">
+    {% for terrain in terrains %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ terrain.nom }}</td>
+      <td>{{ terrain.adresse }}</td>
+      <td>{{ terrain.tarif_horaire }}</td>
+      <td>{{ terrain.disponibilite }}</td>
+      <td>{{ terrain.capacite_joueur }}</td>
+      <td>{{ terrain.superficie }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+  {% endblock content %}

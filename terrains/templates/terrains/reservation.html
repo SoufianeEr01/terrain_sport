@@ -1,0 +1,64 @@
+{% extends 'terrains/base.html' %}
+
+{% block content %}
+    <div class="container mt-5 pt-5" style="padding: 6cm">
+        <h2>Réservation</h2>
+        <form method="POST" action="{% url 'affiche_reservation' terrain.id tarif_horaire %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="montant_payer">Montant à Payer</label>
+                <input type="number" class="form-control" id="montant_payer" name="montant_payer" step="0.01" value="{{ tarif_horaire }}" readonly style="background-color: grey" required style="color: black">
+            </div>
+            <div class="form-group">
+                <label for="etat">État</label>
+                <select class="form-control" id="etat" name="etat" required>
+                    {% for value, name in form.etat.field.choices %}
+                        <option style="color: black" value="{{ value }}">{{ name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="date_debut">Date de Début</label>
+                <input type="datetime-local" class="form-control" id="date_debut" name="date_debut" required>
+            </div>
+            <div class="form-group">
+                <label for="date_fin">Date de Fin</label>
+                <input type="datetime-local" class="form-control" id="date_fin" name="date_fin" required>
+            </div>
+            <div class="form-group">
+                <label for="client_id">Client</label>
+                <select class="form-control" id="client_id" name="client_id" required>
+                    {% for client in clients %}
+                        <option style="color: black" value="{{ client.id }}">{{ client.nom }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="terrain_id">Terrain</label>
+                <select class="form-control" id="terrain_id" name="terrain_id" required>
+                    {% for terrain_option in terrains %}
+                        <option style="color: black" value="{{ terrain_option.id }}" {% if terrain_option.id == terrain.id %}selected{% endif %}>{{ terrain_option.nom }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Soumettre</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Obtenir la date et l'heure actuelles
+            const now = new Date();
+            // Formater la date et l'heure pour le type datetime-local
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+
+            const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+            // Définir la valeur de l'input datetime-local
+            document.getElementById('date_debut').value = formattedDate;
+        });
+    </script>
+{% endblock %}

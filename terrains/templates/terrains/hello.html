@@ -1,0 +1,33 @@
+# listings/templates/listings/hello.html
+{% extends 'terrains/base.html' %}
+<html>
+    <body>
+     {% block content %}
+        <p>Mes groupes préférés sont :</p>
+    <ul>
+        <li>{{ bands.0.name }}</li>
+        <li>{{ bands.1.name }}</li>
+        <li>{{ bands.2.name }}</li>
+    </ul>
+        <br/>
+    <p>Mes groupes préférés sont :</p>
+<ul>
+    {% for band in bands %}
+    <li>{{ band.name }}</li>
+    {% endfor %}
+</ul>
+    <p>J'ai {{ bands|length }} groupes préférés.</p>
+    <p>
+    J'ai..
+    {% if bands|length < 5 %}
+        peu de
+    {% elif bands|length < 10 %}
+        quelques
+    {% else %}
+        beaucoup de
+    {% endif %}
+        groupes préférés.
+</p>
+    {% endblock %}
+    </body>
+</html>

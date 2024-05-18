@@ -1,0 +1,119 @@
+{% extends 'terrains/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="hero overlay" style="background-image: url('{% static "terrains/images/bg_3.jpg" %}');">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-5 mx-auto text-center">
+            <h1 class="text-white">Terrains</h1>
+            <p>Cette section contient tous les informations sur les terrains disponibles sur notre plateforme</p>
+          </div>
+        </div>
+      </div>
+</div>
+<div class="site-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-6 title-section">
+        <h2 class="heading">Terrains / Images</h2>
+      </div>
+      <div class="col-6 text-right">
+        <div class="custom-nav">
+          <a href="#terrainCarousel" class="carousel-control-prev text" role="button" data-slide="prev"><span class="icon-keyboard_arrow_left"></span></a>
+          <span></span>
+          <a href="#terrainCarousel" class="carousel-control-next js-custom-next-v2" role="button" data-slide="next"><span class="icon-keyboard_arrow_right"></span></a>
+        </div>
+      </div>
+
+    </div>
+
+    <style>
+      .carousel-item img {
+        height: 200px; /* ajustez cette valeur selon vos besoins */
+        object-fit: cover;
+      }
+    </style>
+
+    <div id="terrainCarousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        {% for terrain in terrains %}
+        <div class="carousel-item {% if forloop.first %} active {% endif %}">
+          <a href="{% url 'terrain_details' terrain_id=terrain.id %}">
+              {% if  terrain.image  %}
+    <img src="{{ terrain.image.url }}"  class="d-block w-100" alt="{{ terrain.nom  }}"/>
+    {% else %}
+            <img src="https://img.freepik.com/photos-gratuite/vue-du-terrain-football-herbe_23-2150887297.jpg?t=st=1715359500~exp=1715363100~hmac=ddb928b17b7b0c3751c22503e1d8799814315adbd9143cfe77f42af773330440&w=360" class="d-block w-100" alt="{{ terrain.nom }}">
+                {% endif %}
+          </a>
+          <div class="carousel-caption d-none d-md-block">
+            <h5>{{ terrain.nom |upper  }}</h5>
+            <a href="{% url 'terrain_details' terrain_id=terrain.id %}" class="btn btn-primary">Détails</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% comment %}<a class="carousel-control-prev" href="#terrainCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#terrainCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>{% endcomment %}
+    </div>
+
+    <!-- Modal -->
+    {% for terrain in terrains %}
+    <div class="modal fade" id="terrainModal{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="terrainModal{{ forloop.counter }}Label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="terrainModal{{ forloop.counter }}Label">{{ terrain.nom }}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Add details about the terrain here -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            <!-- Add other buttons if necessary -->
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  <div class="row">
+      {%  for terrain in terrains %}
+        <div class="col-lg-6 pt-5">
+          <div class="custom-media d-flex">
+            <div class="img mr-4">
+                {% if  terrain.image  %}
+    <img src="{{ terrain.image.url }}" alt="Image" class="h-100 w-auto"/>
+
+    {% else %}
+              <img src="https://img.freepik.com/photos-gratuite/vue-du-terrain-football-herbe_23-2150887297.jpg?t=st=1715359500~exp=1715363100~hmac=ddb928b17b7b0c3751c22503e1d8799814315adbd9143cfe77f42af773330440&w=360" alt="Image" class="img-fluid">
+                {% endif %}
+            </div>
+            <div class="text">
+              <span class="meta">May 20, 2020</span>
+              <h3 class="mb-4"><a href="{% url 'terrain_details' terrain_id=terrain.id %}">{{terrain.nom |upper }}</a></h3>
+              <p>{{ terrain.adresse }}</p>
+            <p>
+                  {% if terrain.disponibilite %}
+                    Actif
+                  {% else %}
+                    Non actif
+                  {% endif %}
+                </p>
+                <p><a href="{% url 'terrain_details' terrain_id=terrain.id %}">Détails</a></p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+  </div>
+  </div>
+</div>
+{% endblock content %}
