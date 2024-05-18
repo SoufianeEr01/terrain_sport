@@ -1,164 +1,175 @@
 {% load static %}
+<!DOCTYPE html>
 <html>
-<title>Marchex</title>
- <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <title>Marchex</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
- <link rel="stylesheet" href="{% static 'terrains/styles.css' %}" />
-{% comment %}<link rel="stylesheet" href="{% static 'terrains/css/bootstrap.css' %}">{% endcomment %}
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'terrains/styles.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="{% static 'terrains/fonts/icomoon/style.css' %}">
-
-  <link rel="stylesheet" href="{% static 'terrains/css/bootstrap/bootstrap.css ' %}">
-  <link rel="stylesheet" href="{% static 'terrains/css/jquery-ui.css ' %}">
-  <link rel="stylesheet" href="{% static 'terrains/css/owl.carousel.min.css ' %}">
-  <link rel="stylesheet" href="{% static 'terrains/css/owl.theme.default.min.css ' %}">
-  <link rel="stylesheet" href="{% static 'terrains/css/owl.theme.default.min.css ' %}">
-
-  <link rel="stylesheet" href="{% static 'terrains/css/jquery.fancybox.min.css ' %}">
-
-  <link rel="stylesheet" href="{% static 'terrains/css/bootstrap-datepicker.css ' %}">
-
-  <link rel="stylesheet" href="{% static 'terrains/fonts/flaticon/font/flaticon.css ' %}">
-
-  <link rel="stylesheet" href="{% static 'terrains/css/aos.css ' %}">
-
-  <link rel="stylesheet" href="{% static 'terrains/css/style.css ' %}">
-
+    <link rel="stylesheet" href="{% static 'terrains/fonts/icomoon/style.css' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/bootstrap/bootstrap.css ' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/jquery-ui.css ' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/owl.carousel.min.css ' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/owl.theme.default.min.css ' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/jquery.fancybox.min.css ' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/bootstrap-datepicker.css ' %}">
+    <link rel="stylesheet" href="{% static 'terrains/fonts/flaticon/font/flaticon.css ' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/aos.css ' %}">
+    <link rel="stylesheet" href="{% static 'terrains/css/style.css ' %}">
+</head>
 <body>
 
 <div class="site-wrap">
-  <div class="site-mobile-menu site-navbar-target">
-    <div class="site-mobile-menu-header">
-      <div class="site-mobile-menu-close">
-        <span class="icon-close2 js-menu-toggle"></span>
-      </div>
+    <div class="site-mobile-menu site-navbar-target">
+        <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close">
+                <span class="icon-close2 js-menu-toggle"></span>
+            </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
     </div>
-    <div class="site-mobile-menu-body"></div>
-  </div>
-  <header class="site-navbar py-4" role="banner">
-
-    <div class="container">
-      <div class="d-flex align-items-center">
-        <div class="site-logo">
-          <a href="{% url 'index' %}">
-            <img src="{% static 'terrains/images/logo.png' %}" alt="Logo">
-          </a>
+    <header class="site-navbar py-4" role="banner">
+        <div class="container">
+            <div class="d-flex align-items-center">
+                <div class="site-logo">
+                    <a href="{% url 'index' %}">
+                        <img src="{% static 'terrains/images/logo.png' %}" alt="Logo">
+                    </a>
+                </div>
+                <div class="ml-auto">
+                    <nav class="site-navigation position-relative text-right" role="navigation">
+                        <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                            <li class="active"><a href="{% url 'index' %}" class="nav-link">Home</a></li>
+                            <li><a href="{% url 'players' %}" class="nav-link">Terrains</a></li>
+                            <li><a href="#" class="nav-link">Blog</a></li>
+                            <li><a href="#" class="nav-link">Contact</a></li>
+                            <li><a href="#" class="nav-link">Profil</a></li>
+                        </ul>
+                    </nav>
+                    <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black float-right text-white">
+                        <span class="icon-menu h3 text-white"></span>
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="ml-auto">
-          <nav class="site-navigation position-relative text-right" role="navigation">
-            <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-              <li class="active"><a href="{% url 'index' %}" class="nav-link">Home</a></li>
-               <!--<li><a href="#" class="nav-link">Matches</a></li>-->
-                <li><a href="{% url 'players' %}" class="nav-link">Terrains</a></li>
-              <li><a href="#" class="nav-link">Blog</a></li>
-              <li><a href="#" class="nav-link">Contact</a></li>
-           <li>
-        <a href="#" class="nav-link">
-            Profil
-        </a>
+    </header>
 
-</li>
-            </ul>
-          </nav>
+    <section>
+        <div class="container py-5">
+            <div class="row">
+                <div class="col">
+                </div>
+            </div>
 
-          <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black float-right text-white"><span
-              class="icon-menu h3 text-white"></span></a>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                                class="rounded-circle img-fluid" style="width: 150px;">
+                            <h5 class="my-3">{{ user.username }}</h5>
+                            <p class="text-muted mb-1">Full Stack Developer</p>
+                            <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                            <div class="d-flex justify-content-center mb-2">
+                                <button type="button" class="btn btn-primary" style="color: black">
+                                    <a href="{% url 'logout' %}" class="nav-link" style="color: #0b0b0b;">logout</a>
+                                </button>
+                                <button type="button" class="btn btn-primary" style="color: black" onclick="showForm()">
+                                    Modifier info
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Full Name</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ user.username }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Email</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">example@example.com</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Phone</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">(097) 234-5678</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Mobile</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">(098) 765-4321</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Address</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4" id="edit-form" style="display: none;">
+                        <div class="card-body">
+                            <h2>Modifier les informations de l'utilisateur</h2>
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
+    </section>
 
-  </header>
-<section >
-  <div class="container py-5">
-    <div class="row">
-      <div class="col">
-      </div>
-    </div>
+    <style>
+        body {
+            background-color: #343a40;
+            color: white;
+        }
+        .row {
+            margin-top: 30px; /* Marge en bas du header */
+            color: #0b0b0b;
+        }
+        section {
+            margin-top: 30px; /* Marge en haut de la section */
+        }
+    </style>
 
-    <div class="row">
-      <div class="col-lg-4">
-        <div class="card mb-4">
-          <div class="card-body text-center">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-              class="rounded-circle img-fluid" style="width: 150px;">
-            <h5 class="my-3">{{ user.username }}</h5>
-            <p class="text-muted mb-1">Full Stack Developer</p>
-            <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
-            <div class="d-flex justify-content-center mb-2">
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary" style="color: black"> <a href="{% url 'logout' %}" class="nav-link" style="color: #0b0b0b;">logout</a></button>
-
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-8">
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Full Name</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ user.username }}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Email</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">example@example.com</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Phone</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">(097) 234-5678</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Mobile</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">(098) 765-4321</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Address</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<style>
-    body {
-        background-color: #343a40;
-        color: white;
-    }
-
-    .row {
-        margin-top: 30px; /* Marge en bas du header */
-        color: #0b0b0b;
-    }
-
-    section {
-        margin-top: 30px; /* Marge en haut de la section */
-    }
-</style>
+    <script>
+        function showForm() {
+            var form = document.getElementById("edit-form");
+            form.style.display = form.style.display === "none" ? "block" : "none";
+        }
+    </script>
+</div>
+</body>
+</html>

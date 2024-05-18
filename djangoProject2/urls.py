@@ -24,7 +24,8 @@ urlpatterns = [
     path('ajout_terrain/', views.Ajout_terrain, name='Ajou_terrain'),
     path('modifier-terrain/<int:terrain_id>/', views.modifier_terrain, name='modifier_terrain'),
     path('terrain/<int:terrain_id>/', views.terrain_details, name='terrain_details'),
-
-
-
-]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('supprimer-terrain/<int:terrain_id>/', views.supprimer_terrain, name='supprimer_terrain'),
+    path('modifier_utilisateur/', views.modifier_utilisateur, name='modifier_utilisateur'),
+                  path('modifier_utilisateur_normal/', views.modifier_utilisateur_normal,
+                       name='modifier_utilisateur_normal'),
+              ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -5,13 +5,13 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import logout
 from django.http import JsonResponse
-
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User
 from django.urls import reverse
-
+from django.http import HttpResponseForbidden
 from terrains.models import Terrain
 from .models import Client
 from django.shortcuts import render
@@ -20,7 +20,8 @@ from django.contrib import messages
 from terrains.TerrainForm import TerrainForm
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-
+from terrains.form_modife import UserUpdateForm
+from terrains.form_2_change_info import UserUpdateForm_n
 def index(request):
     return render(request, 'terrains/index.html')
 #def hello(request):
@@ -65,16 +66,17 @@ def user_login(request):
         password = request.POST.get('password')
         user = authenticate(request, username=email, password=password)
         if user is not None:
-            if user.is_superuser:
-                return redirect('dashbord')
-            else:
+            if user.is_active:  # Vérifier si l'utilisateur est actif
                 auth_login(request, user)
-                return redirect('profile')
+                if user.is_superuser:
+                    return redirect('dashbord')
+                else:
+                    return redirect('profile')
+            else:
+                messages.error(request, "Votre compte est désactivé.")
         else:
-            messages.error(request, "Invalid Email ou Mots de passe")
-            return render(request, 'terrains/login.html', {})
-    else:
-        return render(request, 'terrains/login.html', {})
+            messages.error(request, "Email ou mot de passe invalide.")
+    return render(request, 'terrains/login.html')
 
 
 
@@ -93,7 +95,10 @@ def user_logout(request):
     return redirect('index')
 
 
+
 def dashbord(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation d'accéder à cette page.")
     return render(request, 'terrains/dashbord.html')
 def liste_terrains(request):
     terrains = Terrain.objects.all()
@@ -108,6 +113,9 @@ def liste_utilisateurs(request):
 
 
 def Ajout_terrain(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation d'accéder à cette page.")
+
     if request.method == 'POST':
         form = TerrainForm(request.POST, request.FILES)
         if form.is_valid():
@@ -130,6 +138,9 @@ def Ajout_terrain(request):
 
 
 def modifier_terrain(request, terrain_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation d'accéder à cette page.")
+
     terrain = get_object_or_404(Terrain, pk=terrain_id)
     if request.method == 'POST':
         form = TerrainForm(request.POST, request.FILES, instance=terrain)
@@ -139,7 +150,97 @@ def modifier_terrain(request, terrain_id):
     else:
         form = TerrainForm(instance=terrain)
 
-    return render(request, 'terrains/Modifier_terrain.html', {'form': form, 'terrain': terrain,'disponibilite_choices': Terrain._meta.get_field('disponibilite').choices})
+    return render(request, 'terrains/Modifier_terrain.html', {'form': form, 'terrain': terrain,
+                                                              'disponibilite_choices': Terrain._meta.get_field(
+                                                                  'disponibilite').choices})
 
 
 
+def supprimer_terrain(request, terrain_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation d'accéder à cette page.")
+
+    if request.method == 'POST':
+        terrain = get_object_or_404(Terrain, pk=terrain_id)
+        terrain.delete()
+        messages.success(request, 'Terrain supprimé avec succès')
+    return redirect('liste_terrains')
+
+
+def modifier_utilisateur(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=user)
+        old_password = request.POST.get('old_password')
+
+        if form.is_valid():
+            # Vérifier l'ancien mot de passe
+            if authenticate(username=user.username, password=old_password):
+                # Mettre à jour les informations utilisateur
+                user.username = form.cleaned_data['username']
+                user.first_name = form.cleaned_data['first_name']
+                user.last_name = form.cleaned_data['last_name']
+                user.email = form.cleaned_data['email']
+
+                # Changer le mot de passe si un nouveau est fourni
+                new_password1 = form.cleaned_data.get('new_password1')
+                new_password2 = form.cleaned_data.get('new_password2')
+                if new_password1:
+                    if new_password1 == new_password2:
+                        user.set_password(new_password1)
+                    else:
+                        messages.error(request, "Les nouveaux mots de passe ne correspondent pas.")
+                        return redirect('modifier_utilisateur')
+
+                user.save()
+
+                # Mettre à jour la session pour éviter la déconnexion
+                update_session_auth_hash(request, user)
+                messages.success(request, 'Votre profil a été mis à jour avec succès!')
+
+                # Redirection en fonction du statut de l'utilisateur
+                if user.is_superuser:
+                    return redirect('dashbord')
+                else:
+                    return redirect('profile')
+            else:
+                messages.error(request, 'Ancien mot de passe incorrect.')
+    else:
+        form = UserUpdateForm(instance=user)
+
+    return render(request, 'terrains/changer_info_user.html', {'form': form})
+
+def modifier_utilisateur_normal(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = UserUpdateForm_n(request.POST, instance=user)
+        old_password = request.POST.get('old_password')
+
+        if form.is_valid():
+            # Vérifier l'ancien mot de passe
+            if authenticate(username=user.username, password=old_password):
+                # Mettre à jour les informations utilisateur
+                user.username = form.cleaned_data['username']
+                user.first_name = form.cleaned_data['first_name']
+                user.last_name = form.cleaned_data['last_name']
+                user.email = form.cleaned_data['email']
+
+                # Changer le mot de passe si un nouveau est fourni
+                new_password1 = form.cleaned_data.get('new_password1')
+                if new_password1:
+                    user.set_password(new_password1)
+
+                user.save()
+
+                # Mettre à jour la session pour éviter la déconnexion
+                update_session_auth_hash(request, user)
+                messages.success(request, 'Votre profil a été mis à jour avec succès!')
+                return redirect('profile')
+            else:
+                messages.error(request, 'Ancien mot de passe incorrect.')
+    else:
+        form = UserUpdateForm_n(instance=user)
+
+    return render(request, 'terrains/changer_info_user.html', {'form': form})

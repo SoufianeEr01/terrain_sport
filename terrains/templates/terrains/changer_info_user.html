@@ -1,0 +1,12 @@
+{% extends 'terrains/dashBase.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Modifier les informations de l'utilisateur</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+    </form>
+</div>
+{% endblock %}
