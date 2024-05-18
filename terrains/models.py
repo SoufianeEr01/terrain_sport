@@ -1,5 +1,8 @@
 from django.db import models
 from enum import Enum
+
+from django.contrib.auth.models import User
+
 class Internaute(models.Model):
     nom = models.CharField(max_length=100)
     tel = models.CharField(max_length=15)
@@ -30,11 +33,11 @@ class Terrain(models.Model):
     tarif_horaire = models.DecimalField(max_digits=10, decimal_places=2)
     disponibilite = models.CharField(max_length=20, choices=[(tag.value, tag.name) for tag in disponibilite])
     capacite_joueur = models.PositiveIntegerField()
-    superficie = models.DecimalField(max_digits=10, decimal_places=2)
+
+    map = models.CharField(max_length=500, null=True, blank=True)
     image = models.ImageField(null=True,blank=True, upload_to='images/')
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    administrateur = models.ForeignKey('Administrateur', on_delete=models.CASCADE)
+    administrateur = models.ForeignKey(User, on_delete=models.CASCADE)
+
 
     def __str__(self):
         return self.nom
@@ -60,7 +63,9 @@ class MethodePaiement(Enum):
 
 class Reservation(models.Model):
     montant_payer = models.DecimalField(max_digits=10, decimal_places=2)
+
     etat = models.CharField(max_length=20, choices=[(tag.value, tag.name) for tag in EtatReservation], default=EtatReservation.PASSEE.value )
+
     date_debut = models.DateTimeField()
     date_fin = models.DateTimeField()
     client_id = models.ForeignKey('Client', on_delete=models.CASCADE, default=None)

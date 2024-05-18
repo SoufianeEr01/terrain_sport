@@ -21,16 +21,15 @@
             <div class="project-info-box">
                  <p ><b><strong>Tarif horaire:</strong></b> {{ terrain.tarif_horaire }}</p>
 
-              <p> <b>Adresse:</b><a href="{{ terrain.adresse }}"> Clique ici</a></p>
+
+              <p> <b>Adresse:</b><a href="{{ terrain.adresse }}" style="color: #0d0cb5"> Clique ici</a></p>
                 <p><b>Disponibilité:</b> {% if terrain.disponibilite %} Disponible {% else %} Indisponible {% endif %}</p>
                 <p><b>Capacité de joueur:</b> {{ terrain.capacite_joueur }}</p>
-                <p><b>Superficie:</b> {{ terrain.superficie }}</p>
-                <p><b>Latitude:</b> {{ terrain.latitude }}</p>
-                <p><b>Longitude:</b> {{ terrain.longitude }}</p>
                 <p><b>Administrateur:</b> {{ terrain.administrateur }}</p>
 
+
             </div><!-- / project-info-box -->
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3325.1311754096337!2d-7.636353000000001!3d33.549968!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda62d49db4f37b5%3A0x7ff481f78b8807b2!2sCity%20Foot%205!5e0!3m2!1sfr!2sma!4v1715960866247!5m2!1sfr!2sma" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
 
         </div><!-- / column -->
 
@@ -39,11 +38,13 @@
                 <img src="{{ terrain.image.url }}" alt="Image du terrain" class="rounded">
             {% endif %}            <div class="project-info-box">
             <button type="button" class="btn btn-danger btn-lg btn-block" data-mdb-ripple-init data-mdb-ripple-color="dark"><a href="{% url 'affiche_reservation' terrain.id terrain.tarif_horaire  %}" class="nav-link" style="color: #0b0b0b;">Reserver</a></button>
+
             </div><!-- / project-info-box -->
         </div><!-- / column -->
     </div>
 </div>
 
+ {{ terrain.map|safe }}
 <style>
     body{
     background:#f5f5f5;
@@ -511,5 +512,18 @@ h5, b, strong {
 .btn-icon svg {
     fill: #fff; /* Couleur de remplissage blanc pour les icônes */
 }
+
+
+ /* Définir les styles pour l'iframe */
+iframe {
+    width: 1050px; /* Largeur */
+    height: 300px; /* Hauteur */
+    border: 2px solid #ccc; /* Bordure */
+    border-radius: 10px; /* Rayon de la bordure */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre */
+    margin: 0 auto; /* Marge automatique pour centrer horizontalement */
+    display: block; /* Pour s'assurer que l'élément est affiché en tant que bloc */
+}
+
 
 </style>
