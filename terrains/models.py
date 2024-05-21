@@ -44,13 +44,10 @@ class Terrain(models.Model):
 
 class Equipe(models.Model):
     nom = models.CharField(max_length=100)
-    clients = models.ManyToManyField('Client', related_name='equipes')
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     def __str__(self):
         return self.nom
 
-class Client(Internaute):
-    terrains = models.ManyToManyField('Terrain', through='Reservation', related_name='clients')
 
 class EtatReservation(Enum):
     PASSEE = 'Passée'
@@ -62,13 +59,10 @@ class MethodePaiement(Enum):
     VIREMENT_BANCAIRE = 'Virement bancaire'
 
 class Reservation(models.Model):
-    montant_payer = models.DecimalField(max_digits=10, decimal_places=2)
-
+    montant_payer = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     etat = models.CharField(max_length=20, choices=[(tag.value, tag.name) for tag in EtatReservation], default=EtatReservation.PASSEE.value )
-
-    date_debut = models.DateTimeField()
-    date_fin = models.DateTimeField()
-    client_id = models.ForeignKey('Client', on_delete=models.CASCADE, default=None)
+    date_time = models.DateTimeField(null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     terrain_id = models.ForeignKey('Terrain', on_delete=models.CASCADE, default=None)
 
     def __str__(self):

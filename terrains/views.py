@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 # listings/views.py
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import logout
-
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
@@ -15,7 +15,6 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.http import HttpResponseForbidden
 from terrains.models import Terrain
-from .models import Client
 from django.shortcuts import render
 from django.contrib import messages
 
@@ -143,32 +142,28 @@ def Ajout_terrain(request):
     return render(request, 'terrains/Ajoute_terrain.html',
                   {'form': form, 'disponibilite_choices': Terrain._meta.get_field('disponibilite').choices,
                    'administrateurs': superusers})
-
-
+@login_required
 def affiche_reservation(request, terrain_id, tarif_horaire):
-    terrain = get_object_or_404(Terrain, id=terrain_id)
 
     if request.method == 'POST':
         form = ReservationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('index')  # Assurez-vous de remplacer par le nom correct de votre URL
+            reservation = form.save(commit=False)
+            reservation.user = request.user  # Associer l'utilisateur connecté
+            reservation.etat = "PASSEE"
+            reservation.terrain_id = terrain_id
+            reservation.save()
+            return redirect('players')  # Assurez-vous de remplacer par le nom correct de votre URL
     else:
-        form = ReservationForm(initial={'terrain_id': terrain.id, 'tarif_horaire': tarif_horaire})
+        form = ReservationForm(initial={'terrain_id': terrain_id, 'tarif_horaire': tarif_horaire})
 
-    clients = Client.objects.all()
-    terrains = Terrain.objects.all()
     context = {
         'form': form,
-        'clients': clients,
-        'terrains': terrains,
-        'terrain': terrain,
-        'tarif_horaire': tarif_horaire,
+        'terrain_id': terrain_id,
+        'montant_payer': tarif_horaire,
     }
 
     return render(request, 'terrains/reservation.html', context)
-
-
 def modifier_terrain(request, terrain_id):
     if not request.user.is_superuser:
         return HttpResponseForbidden("Vous n'avez pas l'autorisation d'accéder à cette page.")
