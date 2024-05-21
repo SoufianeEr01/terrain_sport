@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
-        fields = ['montant_payer', 'reservation_datetime', 'terrain_id', 'tarif_horaire']
+        fields = ['montant_payer', 'reservation_datetime', 'terrain_id']
         labels = {
             'reservation_datetime': 'Date et heure de réservation',
         }
