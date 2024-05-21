@@ -1,12 +1,41 @@
 {% extends 'terrains/dashBase.html' %}
-
+<hr>
 {% block content %}
+
 <div class="container mt-5">
-    <h2>Modifier les informations de l'utilisateur</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-    </form>
+    <h2 style="color: white">Modifier les informations de l'utilisateur</h2>
+    <hr>
+    <form method="post" style="display: flex; flex-direction: column; gap: 15px;">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="id_username">Username:</label>
+        <input type="text" name="username" id="id_username" class="form-control" value="{{ user.username }}" style="color: black; background-color: white; border: 1px solid black;">
+    </div>
+    <div class="form-group">
+        <label for="id_first_name">First Name:</label>
+        <input type="text" name="first_name" id="id_first_name" class="form-control" value="{{ user.first_name }}" style="color: black; background-color: white; border: 1px solid black;">
+    </div>
+    <div class="form-group">
+        <label for="id_last_name">Last Name:</label>
+        <input type="text" name="last_name" id="id_last_name" class="form-control" value="{{ user.last_name }}" style="color: black; background-color: white; border: 1px solid black;">
+    </div>
+    <div class="form-group">
+        <label for="id_email">Email:</label>
+        <input type="email" name="email" id="id_email" class="form-control" value="{{ user.email }}" style="color: black; background-color: white; border: 1px solid black;">
+    </div>
+    <div class="form-group">
+        <label for="id_old_password">Ancien mot de passe:</label>
+        <input type="password" name="old_password" id="id_old_password" class="form-control" style="color: black; background-color: white; border: 1px solid black;">
+    </div>
+    <div class="form-group">
+        <label for="id_new_password1">Nouveau mot de passe:</label>
+        <input type="password" name="new_password1" id="id_new_password1" class="form-control" style="color: black; background-color: white; border: 1px solid black;">
+    </div>
+    <div class="form-group">
+        <label for="id_new_password2">Confirmer le nouveau mot de passe:</label>
+        <input type="password" name="new_password2" id="id_new_password2" class="form-control" style="color: black; background-color: white; border: 1px solid black;">
+    </div>
+    <button type="submit" class="btn btn-primary" style="align-self: center; padding: 10px 20px; background-color: #007bff; border: none; color: black; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;">Enregistrer les modifications</button>
+</form>
 </div>
 {% endblock %}

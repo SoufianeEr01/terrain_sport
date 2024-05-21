@@ -36,7 +36,7 @@
  {% if terrain.image %}
                 <img src="{{ terrain.image.url }}" alt="Image du terrain" class="rounded img-fluid" style="max-width: 600px; height: 350px;margin-top: 30px">
             {% endif %}            <div class="project-info-box">
-              <button type="button" class="btn btn-danger btn-lg btn-block" data-mdb-ripple-init data-mdb-ripple-color="dark">Reserver</button>
+              <button type="button" class="btn btn-danger btn-lg btn-block" data-mdb-ripple-init data-mdb-ripple-color="dark"><a href="{% url 'reserve_terrain' %}">Reserver</a></button>
             </div><!-- / project-info-box -->
         </div><!-- / column -->
     </div>

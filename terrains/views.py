@@ -16,12 +16,13 @@ from terrains.models import Terrain
 from .models import Client
 from django.shortcuts import render
 from django.contrib import messages
-
+from django.core.exceptions import ValidationError
 from terrains.TerrainForm import TerrainForm
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from terrains.form_modife import UserUpdateForm
 from terrains.form_2_change_info import UserUpdateForm_n
+
 def index(request):
     return render(request, 'terrains/index.html')
 #def hello(request):
@@ -82,14 +83,19 @@ def user_login(request):
 
 @login_required
 def profile(request):
-    user = request.user
+    if request.method == 'POST':
+        form = UserUpdateForm_n(request.POST, instance=request.user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            new_password = form.cleaned_data.get('new_password1')
+            if new_password:
+                user.set_password(new_password)
+            user.save()
+            return redirect('profile')
+    else:
+        form = UserUpdateForm_n(instance=request.user)
 
-    context = {
-        'user': user,
-    }
-
-    return render(request, 'terrains/profil.html', context)
-
+    return render(request, 'terrains/profil.html', {'form': form})
 def user_logout(request):
     logout(request)
     return redirect('index')
@@ -244,3 +250,6 @@ def modifier_utilisateur_normal(request):
         form = UserUpdateForm_n(instance=user)
 
     return render(request, 'terrains/changer_info_user.html', {'form': form})
+
+def reserver(request):
+    return render(request, 'terrains/reserver.html')
