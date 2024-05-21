@@ -37,8 +37,12 @@
  {% if terrain.image %}
                 <img src="{{ terrain.image.url }}" alt="Image du terrain" class="rounded">
             {% endif %}            <div class="project-info-box">
+<<<<<<< HEAD
             <button type="button" class="btn btn-danger btn-lg btn-block" data-mdb-ripple-init data-mdb-ripple-color="dark"><a href="{% url 'affiche_reservation' terrain.id terrain.tarif_horaire  %}" class="nav-link" style="color: #0b0b0b;">Reserver</a></button>
 
+=======
+              <button type="button" class="btn btn-danger btn-lg btn-block" data-mdb-ripple-init data-mdb-ripple-color="dark"><a href="{% url 'reserve_terrain' %}">Reserver</a></button>
+>>>>>>> 6644284fd32cb75d57770fd6882decb3ae6194c4
             </div><!-- / project-info-box -->
         </div><!-- / column -->
     </div>
