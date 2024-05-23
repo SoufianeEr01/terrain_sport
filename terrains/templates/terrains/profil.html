@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <title>Profile </title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'terrains/css/bootstrap/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'terrains/css/jquery-ui.css' %}">
@@ -30,22 +31,27 @@
 
 <body>
 <div>
-   <button id="back-to-top">
-        <a href="{% url 'index' %}"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-left-square" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
-        </svg></a>
-    </button>
+   <a href="{% url 'index' %}" class="btn btn-outline-primary btn-icon ml-5">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left mr-2" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+    </svg>
+</a>
+{% if request.GET.deleted %}
+    <div class="alert alert-success" role="alert">
+        La réservation a été annulée avec succès.
+    </div>
+{% endif %}
     <div class="container light-style flex-grow-1 container-p-y">
         <div class="card overflow-hidden">
             <div class="row no-gutters row-bordered row-border-light">
                 <div class="col-md-3 pt-0">
                     <div class="list-group list-group-flush account-settings-links">
                         <a class="list-group-item list-group-item-action active" data-toggle="list"
-                            href="#account-general">Profil</a>
+                            href="#account-general">1. Profil</a>
                         <a class="list-group-item list-group-item-action" data-toggle="list"
-                            href="#account-change-password">Change Info</a>
+                            href="#account-change-password">2. Change Info</a>
                         <a class="list-group-item list-group-item-action" data-toggle="list"
-                            href="#account-info">List Reservation</a>
+                            href="#account-info">3. List Reservation</a>
 
                     </div>
                 </div>
@@ -99,8 +105,8 @@
                             </div>
                             <hr>
                             <div class="d-flex justify-content-center mb-2">
-                                <button type="button" class="btn btn-primary" style="color: black">
-                                    <a href="{% url 'logout' %}" class="nav-link" style="color: #0b0b0b;">logout</a>
+                                <button type="button" class="btn btn-danger" style="color: black">
+                                    <a href="{% url 'logout' %}" class="nav-link" style="color: white;">logout</a>
                                 </button>
                             </div>
                             </div>
@@ -147,54 +153,51 @@
         <label for="id_new_password2">Confirmer le nouveau mot de passe:</label>
         <input type="password" name="new_password2" id="id_new_password2" class="form-control" style="color: black !important; background-color: white; border: 1px solid black;">
     </div>
-    <button type="submit" class="btn btn-primary" style="align-self: center; padding: 10px 20px; background-color: #007bff; border: none; color: black !important; border-radius: 5px; transition: background-color 0.3s;">Enregistrer les modifications</button>
+    <button type="submit" class="btn btn-primary " style="align-self: center; padding: 10px 20px; background-color: #007bff; border: none; color: white !important; border-radius: 5px; transition: background-color 0.3s;">Enregistrer les modifications</button>
 </form>
                             </div>
                         </div>
+
                         <div class="tab-pane fade" id="account-info">
-                            <div class="card-body pb-2">
-                                <div class="form-group">
-                                    <label class="form-label">Bio</label>
-                                    <textarea class="form-control"
-                                        rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nunc arcu, dignissim sit amet sollicitudin iaculis, vehicula id urna. Sed luctus urna nunc. Donec fermentum, magna sit amet rutrum pretium, turpis dolor molestie diam, ut lacinia diam risus eleifend sapien. Curabitur ac nibh nulla. Maecenas nec augue placerat, viverra tellus non, pulvinar risus.</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Birthday</label>
-                                    <input type="text" class="form-control" value="May 3, 1995">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Country</label>
-                                    <select class="custom-select">
-                                        <option>USA</option>
-                                        <option selected>Canada</option>
-                                        <option>UK</option>
-                                        <option>Germany</option>
-                                        <option>France</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <hr class="border-light m-0">
-                            <div class="card-body pb-2">
-                                <h6 class="mb-4">Contacts</h6>
-                                <div class="form-group">
-                                    <label class="form-label">Phone</label>
-                                    <input type="text" class="form-control" value="+0 (123) 456 7891">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Website</label>
-                                    <input type="text" class="form-control" value>
-                                </div>
-                            </div>
+<div class="container mt-5">
+        <h1 class="text-center">Mes Réservations</h1>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Terrain</th>
+                    <th>Date et Heure</th>
+                    <th>Montant Payé</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in reservations %}
+                    <tr>
+                        <td>{{ reservation.terrain_id.nom }}</td>
+                        <td>{{ reservation.date_time }}</td>
+                        <td>{{ reservation.montant_payer }} DH</td>
+                        <td>
+                            <form method="post" action="{% url 'annuler_reservation' reservation.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Annuler</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">Vous n'avez aucune réservation.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
                         </div>
-
-
-
-
                     </div>
                 </div>
             </div>
         </div>
-
+    </div>
     </div>
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>

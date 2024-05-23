@@ -9,10 +9,8 @@ urlpatterns = [
     path('index/', views.index, name='index'),
     path('login/', views.user_login, name='login'),
     path('register/', views.register, name='register'),
-
     path('reservation/<int:terrain_id>/<str:tarif_horaire>/', views.affiche_reservation, name='affiche_reservation'),
    # path('reservationf/', views.reservation_create, name='reservation_create'),
-
     path('profile/', views.profile, name='profile'),
     path('', views.index),
     path('players/', views.players, name='players'),
@@ -30,4 +28,6 @@ urlpatterns = [
     path('envoyer_reservation/', views.envoyer_reservation, name='envoyer_reservation'),
     path('facture/<int:facture_id>/pdf/', views.generate_pdf, name='generate_pdf'),
     path('fact/<int:reservation_id>/', views.fact, name='fact'),
+    path('blog/', views.blog, name='blog'),
+    path('annuler_reservation/<int:reservation_id>/', views.annuler_reservation, name='annuler_reservation'),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

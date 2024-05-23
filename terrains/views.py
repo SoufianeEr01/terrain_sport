@@ -23,8 +23,11 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import cm
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
 from .models import Facture
+from django.urls import reverse
+
 def index(request):
-    return render(request, 'terrains/index.html')
+    terrains_list = Terrain.objects.all()
+    return render(request, 'terrains/index.html', {'terrains_list': terrains_list})
 
 def players(request):
     terrains_list = Terrain.objects.all()
@@ -80,11 +83,17 @@ def profile(request):
             return redirect('profile')
     else:
         form = UserUpdateForm_n(instance=request.user)
-    return render(request, 'terrains/profil.html', {'form': form})
+
+    user = request.user
+    reservations = Reservation.objects.filter(user=user).order_by('date_time')
+
+    return render(request, 'terrains/profil.html', {'form': form, 'reservations': reservations})
 
 def user_logout(request):
     logout(request)
     return redirect('index')
+def blog(request):
+    return render(request, 'terrains/blog.html')
 
 def dashbord(request):
     if not request.user.is_superuser:
@@ -135,6 +144,7 @@ def affiche_reservation(request, terrain_id, tarif_horaire):
 
     return render(request, 'terrains/reservation.html', {'terrain': terrain, 'tarif_horaire': tarif_horaire, 'user':user, 'dates_reservees': dates_reservees})
 
+
 def envoyer_reservation(request):
     if request.method == 'POST':
         date_time_str = request.POST.get('date_time')  # Format: 2024-06-05T14:00
@@ -146,6 +156,7 @@ def envoyer_reservation(request):
         aware_date_time = timezone.make_aware(naive_date_time, timezone.get_current_timezone())
         # Récupérer les réservations pour le terrain donné
         reservations = Reservation.objects.filter(terrain_id=terrain_id)
+        montant_payer = request.POST.get('montant_payer')
         for reservation in reservations:
             reservation_date_time = reservation.date_time
             # Assurez-vous que la date_time de la réservation est également aware
@@ -153,21 +164,18 @@ def envoyer_reservation(request):
                 reservation_date_time = timezone.make_aware(reservation_date_time, timezone.get_current_timezone())
             # Comparaison des deux objets datetime aware
             if reservation_date_time == aware_date_time:
-                return HttpResponse(str(aware_date_time) + "a été déjà reservé")
+                return render(request, 'terrains/reservation_modal.html', {'date_time': aware_date_time, 'terrain_id':terrain_id, 'tarif_horaire':montant_payer})
         terrain = Terrain.objects.get(id=terrain_id)
-        montant_payer = request.POST.get('montant_payer')
         etat = "PASSEE"
         reservation = Reservation(
             terrain_id=terrain,
             montant_payer=montant_payer,
             user=request.user,
             etat=etat,
-            date_time=date_time_str
+            date_time=aware_date_time
         )
         reservation.save()
         return redirect('fact', reservation_id=reservation.id)
-        #return HttpResponse("Réservation enregistrée avec succès.")
-
 def fact(request, reservation_id):
     reservation = Reservation.objects.get(id=reservation_id)
     montant_payer = reservation.montant_payer
@@ -179,7 +187,6 @@ def fact(request, reservation_id):
     )
     facture_id = fact.id
     return redirect('generate_pdf', facture_id=facture_id)
-
 def generate_pdf(request, facture_id):
     # Récupérer la facture à partir de l'ID
     try:
@@ -396,3 +403,10 @@ def modifier_utilisateur_normal(request):
 
 def reserver(request, terrain_id, tarif_horaire):
     return render(request, 'terrains/reserver.html', terrain_id, tarif_horaire)
+@login_required
+def annuler_reservation(request, reservation_id):
+    reservation = get_object_or_404(Reservation, id=reservation_id, user=request.user)
+    reservation.delete()
+    return redirect(reverse('profile') + '?deleted=1')
+    #return HttpResponse('Bien annulé')
+

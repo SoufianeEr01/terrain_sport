@@ -59,15 +59,21 @@
     </style>
 </head>
 <body>
+{% comment %}
 <ul>{% for date_reservee in dates_reservees %}
     <li>{{ date_reservee }}</li>
 {% endfor %}</ul>
-
+{% endcomment %}
+<a href="{% url 'terrain_details' terrain.id %}" class="btn btn-outline-primary btn-icon ml-5">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left mr-2" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+    </svg>
+</a>
 <div id="message" style="display:none;">Date sélectionnée!</div>
     <div class="container d-flex justify-content-center align-items-center">
         <div class="card">
             <div class="card-header text-center">
-                Réserver Terrain  {{ terrain.nom }}
+                Réserver {{ terrain.nom }}
             </div>
             <div class="card-body">
                 <div class="form-group">
@@ -281,9 +287,6 @@ function updateReservedDates() {
 
 // Appel initial pour mettre à jour les dates réservées au chargement de la page
 updateReservedDates();
-
-
-
 
     </script>
 </body>
