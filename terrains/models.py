@@ -31,7 +31,7 @@ class Terrain(models.Model):
     nom = models.CharField(max_length=100)
     adresse = models.CharField(max_length=255)
     tarif_horaire = models.DecimalField(max_digits=10, decimal_places=2)
-    disponibilite = models.CharField(max_length=20, choices=[(tag.value, tag.name) for tag in disponibilite])
+    disponibilite = models.CharField(max_length=20, choices=[(tag.value, tag.name) for tag in disponibilite], default=disponibilite.DISPONIBLE.value)
     capacite_joueur = models.PositiveIntegerField()
 
     map = models.CharField(max_length=500, null=True, blank=True)

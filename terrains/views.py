@@ -1,67 +1,51 @@
-from django.shortcuts import render, get_object_or_404,redirect
-from django.contrib.auth.decorators import login_required
-# Create your views here.
-# listings/views.py
-from django.http import HttpResponse,HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User
-
-from django.urls import reverse
+from django.utils import timezone
+from datetime import datetime
 from django.http import HttpResponseForbidden
-from terrains.models import Terrain
+from terrains.models import Terrain, Reservation
 from django.shortcuts import render
 from django.contrib import messages
-from django.core.exceptions import ValidationError
 from terrains.TerrainForm import TerrainForm
-
-from terrains.ReservationForm import ReservationForm
-from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from terrains.form_modife import UserUpdateForm
 from terrains.form_2_change_info import UserUpdateForm_n
-
+from django.core.paginator import Paginator
+import io
+from django.http import FileResponse, HttpResponse
+from reportlab.lib.pagesizes import A4
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import cm
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
+from .models import Facture
 def index(request):
     return render(request, 'terrains/index.html')
-#def hello(request):
- #   bands = Terrain.objects.all()
-  #  return render(request, 'listings/hello.html',
-   #               #{'first_band': bands[0]})
-    #             {'bands': bands})
-
 
 def players(request):
-    terrains = Terrain.objects.all()
+    terrains_list = Terrain.objects.all()
+    paginator = Paginator(terrains_list, 4)  # Affiche 5 terrains par page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     return render(request, 'terrains/players.html',
-                  {'terrains': terrains})
-# Dans views.py
-
-
+                  {'page_obj': page_obj, 'terrains_list': terrains_list})
 def terrain_details(request, terrain_id):
     terrain = get_object_or_404(Terrain, pk=terrain_id)
     return render(request, 'terrains/terrain_details.html', {'terrain': terrain})
 
 def register(request):
     if request.method == 'POST':
-
         last_name = request.POST.get('name')
         first_name = request.POST.get('first_name')
         email = request.POST.get('email')
         password = request.POST.get('password')
-
-
         user = User.objects.create_user(username=email, email=email, password=password, first_name=first_name,
                                         last_name=last_name)
-
-
         return redirect('index')
-
-
     return render(request, 'terrains/register.html')
 
 def user_login(request):
@@ -83,8 +67,6 @@ def user_login(request):
             messages.error(request, "Email ou mot de passe invalide.")
     return render(request, 'terrains/login.html')
 
-
-
 @login_required
 def profile(request):
     if request.method == 'POST':
@@ -98,19 +80,17 @@ def profile(request):
             return redirect('profile')
     else:
         form = UserUpdateForm_n(instance=request.user)
-
     return render(request, 'terrains/profil.html', {'form': form})
+
 def user_logout(request):
     logout(request)
     return redirect('index')
-
-
-
 
 def dashbord(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden("Vous n'avez pas l'autorisation d'accéder à cette page.")
     return render(request, 'terrains/dashbord.html')
+
 def liste_terrains(request):
     terrains = Terrain.objects.all()
     return render(request, 'terrains/page_aff_terrain.html', {'terrains': terrains})
@@ -136,39 +116,175 @@ def Ajout_terrain(request):
             terrain = form.save(commit=False)
             terrain.administrateur = super_user
             terrain.save()
-
-
             return redirect('dashbord')  # Rediriger vers une vue appropriée après l'ajout
     else:
         form = TerrainForm()
-
 
     superusers = User.objects.filter(is_superuser=True)
     return render(request, 'terrains/Ajoute_terrain.html',
                   {'form': form, 'disponibilite_choices': Terrain._meta.get_field('disponibilite').choices,
                    'administrateurs': superusers})
+
 @login_required
 def affiche_reservation(request, terrain_id, tarif_horaire):
+    user = request.user  # Associer l'utilisateur connecté
+    terrain = Terrain.objects.get(id=terrain_id)
+    reservations = Reservation.objects.filter(terrain_id=terrain_id)
+    # Créer une liste des dates réservées
+    dates_reservees = [reservation.date_time for reservation in reservations]
 
+    return render(request, 'terrains/reservation.html', {'terrain': terrain, 'tarif_horaire': tarif_horaire, 'user':user, 'dates_reservees': dates_reservees})
+
+def envoyer_reservation(request):
     if request.method == 'POST':
-        form = ReservationForm(request.POST)
-        if form.is_valid():
-            reservation = form.save(commit=False)
-            reservation.user = request.user  # Associer l'utilisateur connecté
-            reservation.etat = "PASSEE"
-            reservation.terrain_id = terrain_id
-            reservation.save()
-            return redirect('players')  # Assurez-vous de remplacer par le nom correct de votre URL
-    else:
-        form = ReservationForm(initial={'terrain_id': terrain_id, 'tarif_horaire': tarif_horaire})
+        date_time_str = request.POST.get('date_time')  # Format: 2024-06-05T14:00
+        terrain_id = request.POST.get('terrain_id')
+        # Convertir la date_time de la requête en objet datetime naive
+        date_time_format = "%Y-%m-%dT%H:%M"
+        naive_date_time = datetime.strptime(date_time_str, date_time_format)
+        # Convertir la date naive en date aware en utilisant le fuseau horaire actuel
+        aware_date_time = timezone.make_aware(naive_date_time, timezone.get_current_timezone())
+        # Récupérer les réservations pour le terrain donné
+        reservations = Reservation.objects.filter(terrain_id=terrain_id)
+        for reservation in reservations:
+            reservation_date_time = reservation.date_time
+            # Assurez-vous que la date_time de la réservation est également aware
+            if timezone.is_naive(reservation_date_time):
+                reservation_date_time = timezone.make_aware(reservation_date_time, timezone.get_current_timezone())
+            # Comparaison des deux objets datetime aware
+            if reservation_date_time == aware_date_time:
+                return HttpResponse(str(aware_date_time) + "a été déjà reservé")
+        terrain = Terrain.objects.get(id=terrain_id)
+        montant_payer = request.POST.get('montant_payer')
+        etat = "PASSEE"
+        reservation = Reservation(
+            terrain_id=terrain,
+            montant_payer=montant_payer,
+            user=request.user,
+            etat=etat,
+            date_time=date_time_str
+        )
+        reservation.save()
+        return redirect('fact', reservation_id=reservation.id)
+        #return HttpResponse("Réservation enregistrée avec succès.")
 
-    context = {
-        'form': form,
-        'terrain_id': terrain_id,
-        'montant_payer': tarif_horaire,
-    }
+def fact(request, reservation_id):
+    reservation = Reservation.objects.get(id=reservation_id)
+    montant_payer = reservation.montant_payer
+    fact = Facture.objects.create(
+        reservations=reservation,
+        montant=montant_payer,
+        methode_paiement='Virement bancaire',
+        date=datetime.now()  # Utiliser la date actuelle
+    )
+    facture_id = fact.id
+    return redirect('generate_pdf', facture_id=facture_id)
 
-    return render(request, 'terrains/reservation.html', context)
+def generate_pdf(request, facture_id):
+    # Récupérer la facture à partir de l'ID
+    try:
+        facture = Facture.objects.get(id=facture_id)
+        reservation = facture.reservations
+        terrain = reservation.terrain_id
+        user = reservation.user
+    except Facture.DoesNotExist:
+        return HttpResponse("Facture non trouvée", status=404)
+
+    # Créer un buffer pour le PDF
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4)
+
+    # Styles de texte
+    styles = getSampleStyleSheet()
+    title_style = styles['Title']
+    normal_style = styles['Normal']
+    subtitle_style = styles['Heading2']
+
+    # Contenu du PDF
+    elements = []
+    # Informations de l'utilisateur
+    user_info = [
+        Paragraph(f"<b>Nom:</b> {user.first_name} {user.last_name}", normal_style),
+        Paragraph(f"<b>Email:</b> {user.email}", normal_style),
+    ]
+
+    elements += user_info
+    elements.append(Spacer(1, 1 * cm))
+
+    # Titre de la facture
+    elements.append(Paragraph("Facture", title_style))
+    elements.append(Spacer(1, 0.5 * cm))
+    # Ajouter une image du terrain si elle existe
+    if terrain.image:
+        image_path = terrain.image.path
+        elements.append(Image(image_path, width=10 * cm, height=5 * cm))
+        elements.append(Spacer(1, 1 * cm))
+
+
+
+    # Informations sur la facture
+    facture_info = [
+        Paragraph(f"<b>Facture ID:</b> {facture.id}", normal_style),
+        Paragraph(f"<b>Date:</b> {facture.date.strftime('%d/%m/%Y')}", normal_style),
+        Paragraph(f"<b>Montant:</b> {facture.montant} DH", normal_style),
+        Paragraph(f"<b>Méthode de paiement:</b> {facture.methode_paiement}", normal_style),
+    ]
+
+    elements += facture_info
+    elements.append(Spacer(1, 1 * cm))
+
+    # Informations sur la réservation
+    reservation_info = [
+        ["Réservation ID:", reservation.id],
+        ["Date et Heure:", reservation.date_time.strftime('%d/%m/%Y %H:%M')],
+        ["Montant payé:", f"{reservation.montant_payer} DH"],
+        ["État:", reservation.etat],
+    ]
+
+    reservation_table = Table(reservation_info, colWidths=[5 * cm, 10 * cm])
+    reservation_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+    elements.append(reservation_table)
+    elements.append(Spacer(1, 1 * cm))
+
+    # Informations sur le terrain
+    terrain_info = [
+        ["Terrain:", terrain.nom],
+        ["Adresse:", terrain.adresse],
+        ["Tarif horaire:", f"{terrain.tarif_horaire} DH"],
+        ["Disponibilité:", terrain.disponibilite],
+        ["Capacité de joueurs:", terrain.capacite_joueur]
+    ]
+
+    terrain_table = Table(terrain_info, colWidths=[5 * cm, 10 * cm])
+    terrain_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+    elements.append(terrain_table)
+    elements.append(Spacer(1, 1 * cm))
+
+    # Finaliser le PDF
+    doc.build(elements)
+
+    # Revenir au début du buffer
+    buffer.seek(0)
+
+    # Envoyer le PDF en réponse
+    return FileResponse(buffer, as_attachment=True, filename=f'facture_{facture.id}.pdf')
+
 def modifier_terrain(request, terrain_id):
     if not request.user.is_superuser:
         return HttpResponseForbidden("Vous n'avez pas l'autorisation d'accéder à cette page.")
@@ -278,5 +394,5 @@ def modifier_utilisateur_normal(request):
     return render(request, 'terrains/changer_info_user.html', {'form': form})
 
 
-def reserver(request):
-    return render(request, 'terrains/reserver.html')
+def reserver(request, terrain_id, tarif_horaire):
+    return render(request, 'terrains/reserver.html', terrain_id, tarif_horaire)

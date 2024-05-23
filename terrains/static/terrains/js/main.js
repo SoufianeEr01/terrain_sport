@@ -251,19 +251,18 @@ jQuery(document).ready(function($) {
 	};
 	siteStellar();
 
-	var siteCountDown = function() {
+	function updateCurrentTime() {
+      const currentTimeElement = document.getElementById('current-time');
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const currentTimeString = ` ${hours} h ${minutes} min ${seconds} sec`;
+      currentTimeElement.textContent = currentTimeString;
+    }
 
-		$('#date-countdown, #date-countdown2').countdown('2024/04/27', function(event) {
-		  var $this = $(this).html(event.strftime(''
-		    + '<span class="countdown-block"><span class="label">%w</span> weeks </span>'
-		    + '<span class="countdown-block"><span class="label">%d</span> days </span>'
-		    + '<span class="countdown-block"><span class="label">%H</span> hr </span>'
-		    + '<span class="countdown-block"><span class="label">%M</span> min </span>'
-		    + '<span class="countdown-block"><span class="label">%S</span> sec</span>'));
-		});
-
-	};
-	siteCountDown();
+    setInterval(updateCurrentTime, 1000);
+    updateCurrentTime(); // Initial call to set the time immediately
 
 	var siteDatePicker = function() {
 

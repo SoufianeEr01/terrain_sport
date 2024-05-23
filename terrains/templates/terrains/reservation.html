@@ -1,56 +1,290 @@
-{% extends 'terrains/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Card</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card {
+            background-color: #1e1e1e;
+            border: none;
+            max-width: 900px;
+        }
+        .card-header {
+            background-color: #333333;
+            color: #ffffff;
+        }
+        .btn-outline-danger {
+            color: #ffffff;
+            border-color: #dc3545;
+        }
+        .btn-outline-danger:hover {
+            color: #ffffff;
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .form-control {
+            background-color: #333333;
+            border: none;
+            color: #ffffff;
+        }
+        .form-control:focus {
+            background-color: #333333;
+            color: #ffffff;
+            border-color: #dc3545;
+            box-shadow: none;
+        }
+        .modal-content {
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+        .modal-header {
+            border-bottom: 1px solid #333333;
+        }
+        .modal-footer {
+            border-top: 1px solid #333333;
+        }
+        .close {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<ul>{% for date_reservee in dates_reservees %}
+    <li>{{ date_reservee }}</li>
+{% endfor %}</ul>
 
-{% block content %}
-    <div class="container mt-5 pt-5" style="padding: 6cm">
-        <h2>Réservation</h2>
-        <form method="POST" action="{% url 'affiche_reservation' terrain_id tarif_horaire %}">
-    {% csrf_token %}
-        {{ form.as_p }}
-    <!-- <div class="form-group">
-        <label for="montant_payer">Montant à Payer</label>
-        <input type="number" class="form-control" id="montant_payer" name="montant_payer" step="0.01" value="{{ tarif_horaire }}" readonly style="background-color: grey" required style="color: black">
+<div id="message" style="display:none;">Date sélectionnée!</div>
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="card">
+            <div class="card-header text-center">
+                Réserver Terrain  {{ terrain.nom }}
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="reservation_date">Select Date:</label>
+                    <input type="date" class="form-control" id="reservation_date" style="background-color: white;color: black !important;">
+                </div>
+                <div class="row" id="modals" style="display:none;">
+                    <!-- Column 1 -->
+                    <div class="col-md-4">
+                        <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#reservationModal" data-start="2024-05-21T09:00" data-end="2024-05-21T10:00">09 -> 10</button>
+                        <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#reservationModal" data-start="2024-05-21T10:00" data-end="2024-05-21T11:00">10 -> 11</button>
+                        <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#reservationModal" data-start="2024-05-21T11:00" data-end="2024-05-21T12:00">11 -> 12</button>
+                        <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#reservationModal" data-start="2024-05-21T12:00" data-end="2024-05-21T13:00">12 -> 13</button>
+                    </div>
+                    <!-- Column 2 -->
+                    <div class="col-md-4">
+                        <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#reservationModal" data-start="2024-05-21T13:00" data-end="2024-05-21T14:00">13 -> 14</button>
+                        <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#reservationModal" data-start="2024-05-21T14:00" data-end="2024-05-21T15:00">14 -> 15</button>
+                        <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#reservationModal" data-start="2024-05-21T15:00" data-end="2024-05-21T16:00">15 -> 16</button>
+                        <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#reservationModal" data-start="2024-05-21T16:00" data-end="2024-05-21T17:00">16 -> 17</button>
+                    </div>
+                    <!-- Column 3 -->
+                    <div class="col-md-4">
+                        <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#reservationModal" data-start="2024-05-21T17:00" data-end="2024-05-21T18:00">17 -> 18</button>
+                        <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#reservationModal" data-start="2024-05-21T18:00" data-end="2024-05-21T19:00">18 -> 19</button>
+                        <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#reservationModal" data-start="2024-05-21T19:00" data-end="2024-05-21T20:00">19 -> 20</button>
+                        <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#reservationModal" data-start="2024-05-21T20:00" data-end="2024-05-21T21:00">20 -> 21</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label for="datetime">Date et Heure:</label>
-        {{ form.reservation_datetime }}
-    </div> -->
+    <!-- Modal -->
+    <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" action="{% url 'envoyer_reservation' %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reservationModalLabel">Make a Reservation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="user_id">User ID</label>
+                            <input type="text" class="form-control" id="user_id" name="user_id" value="{{ user.first_name }}" readonly style="background-color: white;color: black !important;">
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-2">
+                            <label for="terrain_id">ID</label>
+                            <input type="number" class="form-control" id="terrain_id" name="terrain_id" value="{{ terrain.id }}" readonly style="background-color: white;color: black !important;">
+                        </div>
+                        <div class="form-group col-10">
+                            <label for="terrain_nom">Terrain Name</label>
+                            <input type="text" class="form-control" id="terrain_nom" name="terrain_nom" value="{{ terrain.nom }}" readonly style="background-color: white;color: black !important;">
+                        </div>
+                        </div>
 
-    <button type="submit" class="btn btn-primary">Soumettre</button>
-</form>
-
+                        <div class="form-group">
+                            <label for="montant_payer">Montant</label>
+                            <input type="number" class="form-control" id="montant_payer" name="montant_payer" value="{{ tarif_horaire }}" readonly style="background-color: white;color: black !important;">
+                        </div>
+                        <div class="form-group">
+                            <label for="date_time">Start Time</label>
+                            <input type="text" class="form-control" id="date_time" name="date_time" readonly style="background-color: white;color: black !important;">
+                        </div>
+                        <div class="form-group">
+                            <label for="end_time">End Time</label>
+                            <input type="text" class="form-control" id="end_time" name="end_time" readonly style="background-color: white;color: black !important;">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
+                        <button type="submit" class="btn btn-outline-danger">Envoyer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Obtenir la date et l'heure actuelles
-            const now = new Date();
-            // Formater la date et l'heure pour le type datetime-local
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
+        $('#reservationModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var start = button.data('start'); // Extract info from data-* attributes
+            var end = button.data('end'); // Extract info from data-* attributes
+            var date = $('#reservation_date').val(); // Get selected date
 
-            const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
+            var modal = $(this);
+            modal.find('.modal-body #reservation_date_modal').val(date);
+            modal.find('.modal-body #date_time').val(start);
+            modal.find('.modal-body #end_time').val(end);
+        });
 
-            // Définir la valeur de l'input datetime-local
-            document.getElementById('date_debut').value = formattedDate;
-        });
-        flatpickr(".datetimepicker", {
-            enableTime: true,
-            noCalendar: false,
-            dateFormat: "Y-m-d H:i",
-            time_24hr: true,
-            minuteIncrement: 15,
-            enableSeconds: false,
-            onValueUpdate: function(selectedDates, dateStr, instance) {
-                // This will automatically round the minutes to the nearest 15 minutes
-                const date = selectedDates[0];
-                const minutes = date.getMinutes();
-                const roundedMinutes = Math.round(minutes / 15) * 15;
-                date.setMinutes(roundedMinutes);
-                instance.setDate(date, false);
-            }
-        });
+
+
+        // Sélection des éléments date et heure
+var datePicker = document.getElementById('reservation_date');
+var button = document.querySelector('button[data-start]');
+
+
+
+
+        // Sélection de l'élément input date
+// Sélection de l'élément input date
+
+// Ajout d'un écouteur d'événements pour détecter le changement de valeur
+datePicker.addEventListener('mousemove', function() {
+    // Sélection de l'élément div
+    var messageDiv = document.getElementById('modals');
+
+    // Obtention de la date d'aujourd'hui
+    var today = new Date();
+
+    // Obtention de la date sélectionnée
+    var selectedDate = new Date(this.value);
+
+    // Comparaison des dates
+    if((selectedDate.getFullYear() === today.getFullYear()&&
+       selectedDate.getMonth() === today.getMonth() &&
+       selectedDate.getDate() === today.getDate()) || selectedDate > today ) {
+        // Affichage de la div
+        messageDiv.style.display = 'flex';
+    } else {
+        // Masquage de la div
+        messageDiv.style.display = 'none';
+    }
+});
+var datePicker = document.getElementById('reservation_date');
+var buttons = document.querySelectorAll('button[data-start]');
+
+// Ajout d'un écouteur d'événements pour chaque bouton
+buttons.forEach(function(button) {
+    button.addEventListener('click', function() {
+        updateButtonData(button);
+    });
+});
+
+// Fonction pour mettre à jour les attributs data-start et data-end d'un bouton spécifique
+function updateButtonData(button) {
+    var selectedDate = datePicker.value;
+    var startTime = button.getAttribute('data-start').split('T')[1];
+    var endTime = button.getAttribute('data-end').split('T')[1];
+    var dateTimeStart = selectedDate + 'T' + startTime;
+    var dateTimeEnd = selectedDate + 'T' + endTime;
+
+    // Mise à jour des attributs data-start et data-end du bouton cliqué
+    button.setAttribute('data-start', dateTimeStart);
+    button.setAttribute('data-end', dateTimeEnd);
+}
+
+
+
+// Sélection de l'élément input date
+var datePicker = document.getElementById('reservation_date');
+
+// Sélection de tous les boutons
+var buttons = document.querySelectorAll('button[data-start]');
+
+// Récupération des dates réservées depuis le backend, vous devez remplacer cet exemple avec les vraies données
+var datesReservees = {{ dates_reservees|safe }};
+
+// Ajout d'un écouteur d'événements pour chaque bouton
+buttons.forEach(function(button) {
+    button.addEventListener('click', function() {
+        updateButtonData(button);
+    });
+});
+
+// Ajout d'un écouteur d'événements pour détecter le changement de valeur dans l'élément input date
+datePicker.addEventListener('change', function() {
+    updateReservedDates();
+});
+
+// Fonction pour mettre à jour les attributs data-start et data-end d'un bouton spécifique
+function updateButtonData(button) {
+    var selectedDate = datePicker.value;
+    var startTime = button.getAttribute('data-start').split('T')[1];
+    var endTime = button.getAttribute('data-end').split('T')[1];
+    var dateTimeStart = selectedDate + 'T' + startTime;
+    var dateTimeEnd = selectedDate + 'T' + endTime;
+
+    // Mise à jour des attributs data-start et data-end du bouton cliqué
+    button.setAttribute('data-start', dateTimeStart);
+    button.setAttribute('data-end', dateTimeEnd);
+}
+
+// Fonction pour désactiver les boutons de date déjà réservée
+function updateReservedDates() {
+    // Récupération de la date sélectionnée
+    var selectedDate = datePicker.value;
+
+    // Parcours des boutons pour les désactiver en fonction des dates réservées
+    buttons.forEach(function(button) {
+        // Récupération de l'heure de début du créneau
+        var startTime = button.getAttribute('data-start');
+
+        // Vérification si la date et l'heure correspondent à une date réservée
+        if (datesReservees.includes(startTime)) {
+            button.disabled = true; // Désactiver le bouton
+        } else {
+            button.disabled = false; // Activer le bouton
+        }
+    });
+}
+
+// Appel initial pour mettre à jour les dates réservées au chargement de la page
+updateReservedDates();
+
+
+
+
     </script>
-{% endblock %}
+</body>
+</html>

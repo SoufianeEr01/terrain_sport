@@ -6,14 +6,17 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-5 ml-auto">
-          <h1 class="text-white">Championnat de Football</h1>
+          <h1 class="text-white">Réservation de terrains</h1>
           <p>Notre site est la plateforme idéale pour les amateurs de sport à la recherche d'un lieu pour pratiquer leur activité préférée. </p>
-          <div id="date-countdown">
-
+          <div id="date-countdown2">
+            <div class="countdown-block">
+              <span class="label" id="current-time"></span>
+            </div>
           </div>
+
           <p>
-            <a href="#" class="btn btn-primary py-3 px-4 mr-3">Book Ticket</a>
-            <a href="#" class="more light">Learn More</a>
+            <a href="{% url 'players' %}" class="btn btn-primary py-3 px-4 mr-3">Terrains</a>
+            <a href="" class="more light">Learn More</a>
           </p>
         </div>
       </div>

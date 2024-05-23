@@ -622,40 +622,23 @@ h1, h2, h3, h4, h5,
   .hero p {
     color: rgba(255, 255, 255, 0.7); }
 
-#date-countdown {
-  margin-bottom: 20px; }
-  #date-countdown .countdown-block {
-    display: inline-block;
-    font-size: 12px;
-    border-radius: 7px;
-    color: #fff;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    width: 80px;
-    margin-right: 8px;
-    text-align: center; }
-    #date-countdown .countdown-block .label {
-      line-height: 1.2;
-      font-size: 2rem;
-      display: block; }
-
 #date-countdown2 {
-  margin-bottom: 20px; }
-  #date-countdown2 .countdown-block {
-    display: inline-block;
-    font-size: 12px;
-    border-radius: 7px;
-    color: #fff;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    width: 80px;
-    margin-right: 8px;
-    text-align: center; }
+      margin-bottom: 8px;
+    }
+    #date-countdown2 .countdown-block {
+      display: inline-block;
+      font-size: 12px;
+      color: #fff;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      width: 400px; /* Augmenté pour accommoder la taille de police plus grande */
+      text-align: center;
+    }
     #date-countdown2 .countdown-block .label {
       line-height: 1.2;
-      font-size: 1rem;
-      display: block; }
-
+      font-size: 2.5rem; /* Augmenté pour agrandir l'affichage de l'heure */
+      display: block;
+    }
 .more {
   text-transform: uppercase;
   font-size: 12px;
