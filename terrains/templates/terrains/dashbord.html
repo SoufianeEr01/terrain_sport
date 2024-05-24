@@ -31,13 +31,13 @@
                     <li class="sidebar-item">
                         <a href="{% url 'dashbord' %}" class="sidebar-link">
                             <i class="fa-solid fa-list pe-2"></i>
-                            Dashboard
+                            Tableau de bord
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#pages" data-bs-toggle="collapse"
                             aria-expanded="false"><i class="fa-solid fa-file-lines pe-2"></i>
-                            Pages
+                            Listes
                         </a>
                         <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
@@ -45,6 +45,9 @@
                             </li>
                             <li class="sidebar-item">
                                 <a href="{% url 'list_usr' %}" class="sidebar-link">Users</a>
+                            </li>
+                             <li class="sidebar-item">
+                                <a href="{% url 'liste_reservations' %}" class="sidebar-link">Reservation</a>
                             </li>
                         </ul>
                     </li>
@@ -101,7 +104,7 @@
             <main class="content px-3 py-2">
                 <div class="container-fluid">
                     <div class="mb-3">
-                        <h4>Admin Dashboard</h4>
+                        <h4>Page Admin</h4>
                     </div>
                     <div class="row">
                         <div class="col-12 col-md-6 d-flex">
@@ -110,7 +113,7 @@
                                     <div class="row g-0 w-100">
                                         <div class="col-6">
                                             <div class="p-3 m-1">
-                                                <h4>Welcome Back, Admin</h4>
+                                                <h4>Bon retour, Admin</h4>
                                                 <p class="mb-0">Admin , Soccer</p>
                                             </div>
                                         </div>

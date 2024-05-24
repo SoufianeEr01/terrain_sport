@@ -30,13 +30,13 @@
                     <li class="sidebar-item">
                         <a href="{% url 'dashbord' %}" class="sidebar-link">
                             <i class="fa-solid fa-list pe-2"></i>
-                            Dashboard
-                        </a>
+                            Tableau de bord
+                        Tableau de bord</a>
                     </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#pages" data-bs-toggle="collapse"
                             aria-expanded="false"><i class="fa-solid fa-file-lines pe-2"></i>
-                            Pages
+                            Listes
                         </a>
                         <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
@@ -44,6 +44,9 @@
                             </li>
                             <li class="sidebar-item">
                                 <a href="{% url 'list_usr' %}" class="sidebar-link">Users</a>
+                            </li>
+                             <li class="sidebar-item">
+                                <a href="{% url 'liste_reservations' %}" class="sidebar-link">Reservation</a>
                             </li>
                         </ul>
                     </li>

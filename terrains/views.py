@@ -410,3 +410,6 @@ def annuler_reservation(request, reservation_id):
     return redirect(reverse('profile') + '?deleted=1')
     #return HttpResponse('Bien annulé')
 
+def liste_reservations(request):
+    reservations = Reservation.objects.all()
+    return render(request, 'terrains/liste_reservations.html', {'reservations': reservations})

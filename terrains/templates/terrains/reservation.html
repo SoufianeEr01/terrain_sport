@@ -56,6 +56,18 @@
         .close {
             color: #ffffff;
         }
+.back-button {
+        position: fixed;
+        top: 20px; /* Ajustez la valeur en fonction de la position souhaitée */
+        left: 20px; /* Ajustez la valeur en fonction de la position souhaitée */
+       background-color: #dc3545; /* Couleur de fond rouge */
+    border-color: #dc3545;
+        color: white;
+        z-index: 9999; /* Assurez-vous que le bouton soit au-dessus des autres éléments */
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none; /* Supprime le soulignement par défaut */
+    }
     </style>
 </head>
 <body>
@@ -64,7 +76,7 @@
     <li>{{ date_reservee }}</li>
 {% endfor %}</ul>
 {% endcomment %}
-<a href="{% url 'terrain_details' terrain.id %}" class="btn btn-outline-primary btn-icon ml-5">
+<a href="{% url 'terrain_details' terrain.id %}" class="back-button">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left mr-2" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
     </svg>
@@ -77,7 +89,7 @@
             </div>
             <div class="card-body">
                 <div class="form-group">
-                    <label for="reservation_date">Select Date:</label>
+                    <label for="reservation_date">Selectionner une Date:</label>
                     <input type="date" class="form-control" id="reservation_date" style="background-color: white;color: black !important;">
                 </div>
                 <div class="row" id="modals" style="display:none;">
@@ -114,7 +126,7 @@
                 <form method="post" action="{% url 'envoyer_reservation' %}">
                     {% csrf_token %}
                     <div class="modal-header">
-                        <h5 class="modal-title" id="reservationModalLabel">Make a Reservation</h5>
+                        <h5 class="modal-title" id="reservationModalLabel">Faire une réservation</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
