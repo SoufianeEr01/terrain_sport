@@ -413,3 +413,8 @@ def annuler_reservation(request, reservation_id):
 def liste_reservations(request):
     reservations = Reservation.objects.all()
     return render(request, 'terrains/liste_reservations.html', {'reservations': reservations})
+
+
+def contact(request):
+    return render(request, 'terrains/contact.html')
+

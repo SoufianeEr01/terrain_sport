@@ -31,4 +31,6 @@ urlpatterns = [
     path('blog/', views.blog, name='blog'),
     path('annuler_reservation/<int:reservation_id>/', views.annuler_reservation, name='annuler_reservation'),
     path('List_reservations/', views.liste_reservations, name='liste_reservations'),
-]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('Contact/', views.contact, name='contact'),
+
+              ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

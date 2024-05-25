@@ -59,7 +59,7 @@
                 <!--<li id="matches-link"><a href="#" class="nav-link">Matches</a></li>-->
                 <li id="players-link"><a href="{% url 'players' %}" class="nav-link">Terrains</a></li>
                 <li id="blog-link"><a href="{% url 'blog' %}" class="nav-link">Blog</a></li>
-                <li id="contact-link"><a href="#" class="nav-link">Contact</a></li>
+                <li id="contact-link"><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
            <li>
     {% if user.is_authenticated %}
         <a href="{% url 'profile' %}"><div class="btn btn-danger">Profil</div></a>
